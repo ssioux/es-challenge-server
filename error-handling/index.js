@@ -8,6 +8,8 @@ module.exports = (app) => {
     // whenever you call next(err), this middleware will handle the error
     // always logs the error
     console.error("ERROR", req.method, req.path, err);
+
+    
     // * Handling error jwt
     if (err.name === "UnauthorizedError") {
       res.status(401).json({errorMessage: "Invalid Token or there isn`t any Token"})

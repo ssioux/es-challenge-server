@@ -63,7 +63,7 @@ try {
         email: email,
         password: hashPassword,
     }
-   // User create
+   // Create User
    await User.create(newUser)
    // Send Ok message to Front End
    res.status(201).json("User registered correctly.")
