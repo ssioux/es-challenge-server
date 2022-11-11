@@ -122,7 +122,8 @@ router.post("/login", async (req,res,next) =>{
       _id: foundUser._id,
       username: foundUser.username,
       email: foundUser.email,
-      role: foundUser.role
+      role: foundUser.role,
+      picture: foundUser.picture
 
     }
     // Token config
