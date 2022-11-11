@@ -23,6 +23,10 @@ const userSchema = new Schema(
       type: String,
       enum:["user", "admin"],
       default:"user"
+    },
+    picture: {
+      type: String,
+      default: "https://i.pinimg.com/550x/18/b9/ff/18b9ffb2a8a791d50213a9d595c4dd52.jpg"
     }
   },
   {
