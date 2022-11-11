@@ -5,23 +5,24 @@ const teamSchema = new Schema(
   {
     name:{
       type: String,
-      required:[true, "name is required"],
+    required:[true, "name is required"],
       unique: true,
       trim: true
     },
     nameTag: {
       type: String,
-      required:[true, "name is required"],
+    required:[true, "name is required"],
       unique: true,
       trim: true
     },
     picture: {
       type: String,
-      required: [true, 'Password is required.']
+    required: [true, 'Password is required.']
     },
     creator:{
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User"
+      ref: "User",
+      unique: true
     },
     members:[{
         type: mongoose.Schema.Types.ObjectId,

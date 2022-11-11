@@ -5,7 +5,7 @@ const gameSchema = new Schema(
   {
     name:{
       type: String,
-      required:[true, "name is required"],
+    required:[true, "name is required"],
       trim: true
     },
     description: {
@@ -14,7 +14,7 @@ const gameSchema = new Schema(
     },
     picture: {
       type: String,
-      required: [true, 'Password is required.']
+    required: [true, 'Password is required.']
     },
     creator:{
       type: mongoose.Schema.Types.ObjectId,
