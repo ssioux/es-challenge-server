@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const isAuthenticated = require("../middlewares/auth.middlewares");
+// const uploader = require("../middlewares/cloudinary.middlewares")
 const Game = require("../models/Game.model");
 
 // GET "/game" => List of games from BD

@@ -113,7 +113,7 @@ router.post("/login", async (req,res,next) =>{
     // Validation 5: Password is already registered in the DB
     const isPasswordValid = await bcrypt.compare(password, foundUser.password)
     if (isPasswordValid === false) {
-      res.status(400).json({errorMessage: "Incorrect credentials"}) // buena practica (privacidad de usuarios) misma respuesta que anterior clausula de guardia
+      res.status(400).json({errorMessage: "Incorrect credentials"})
       return;
     }
 
