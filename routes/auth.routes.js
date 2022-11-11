@@ -6,7 +6,7 @@ const isAuthenticated = require("../middlewares/auth.middlewares");
 
 // * Authentication Routes
 
-// POST "/api/auth/signup" user register
+// POST "/api/auth/signup" => user register
 router.post("/signup", async (req, res, next) => {
   const { username, email, password } = req.body;
 
