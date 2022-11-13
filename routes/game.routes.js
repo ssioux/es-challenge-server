@@ -4,12 +4,12 @@ const isAuthenticated = require("../middlewares/auth.middlewares");
 // const uploader = require("../middlewares/cloudinary.middlewares")
 const Game = require("../models/Game.model");
 
-// GET "/game" => List of games from BD
+// GET "/game/list" => List of games from BD
 router.get("/list", async (req, res, next) => {
   try {
-    const response = await Game.find();
-    res.status(200).json("game list sende it");
-    console.log(response);
+    const responseList = await Game.find();
+    res.status(200).json(responseList);
+    console.log("lista de juegos",responseList);
   } catch (error) {
     next(error);
   }

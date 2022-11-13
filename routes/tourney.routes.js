@@ -28,7 +28,7 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
   // GET "/tourney/list" => list of Tourneys
 router.get("/list", async (req, res, next) => {
     try {
-      const tourneyList = await Tourney.find();
+      const tourneyList = await Tourney.find().populate("game").populate("creator");
       // send info to client
       res.status(200).json(tourneyList);
     } catch (error) {
