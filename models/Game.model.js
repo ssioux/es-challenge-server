@@ -14,7 +14,8 @@ const gameSchema = new Schema(
     },
     picture: {
       type: String,
-    required: [true, 'Password is required.']
+    required: [true, 'picture is required.'],
+    default: "https://play-lh.googleusercontent.com/T02lXvThp7D49ezfxtfqSF_NjQHlxv4NCqsZUjGC9JEoUARowlIwLwD5GRpCip_HEnLT"
     },
     creator:{
       type: mongoose.Schema.Types.ObjectId,

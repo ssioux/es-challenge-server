@@ -16,10 +16,16 @@ router.get("/list", async (req, res, next) => {
 
 // POST "/team/create" . Create Team
 router.post("/create", isAuthenticated, async (req, res, next) => {
-  const { name, nameTag, picture, creator } = req.body;
-  const teamToadd = { name, nameTag, picture, creator: req.payload._id };
+  const { name, nameTag, picture, joinPassword} = req.body;
+  const teamToCreate = { 
+    name : name,
+    nameTag: nameTag,
+    picture: picture,
+    creator: req.payload._id,
+    joinPassword: joinPassword
+   };
   try {
-    await Team.create(teamToadd);
+    await Team.create(teamToCreate);
     // send message to client
     res.status(201).json("Team created correctly");
   } catch (error) {
