@@ -25,7 +25,7 @@ const tourneySchema = new Schema(
 
     active: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     quarterA: [
       {
