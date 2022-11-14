@@ -10,6 +10,7 @@ const tourneySchema = new Schema(
     },
     game: {
       type: mongoose.Schema.Types.ObjectId,
+      required: [true, "gamre is required"],
       ref: "Game",
     },
     creator: {
