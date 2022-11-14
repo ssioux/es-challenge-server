@@ -25,6 +25,7 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
     joinPassword: joinPassword
    };
   try {
+    
     await Team.create(teamToCreate);
     // send message to client
     res.status(201).json("Team created correctly");
@@ -66,5 +67,27 @@ router.get("/:teamId/details", isAuthenticated, async (req, res, next) => {
     next(error);
   }
 });
+
+// GET "/team/find-creator"
+router.get("/find-creator",isAuthenticated, async (req,res,next) => {
+ 
+  console.log(req.payload)
+  //  const {creatorId} = req.payload._id
+  try {
+    const findCreator = await Team.findOne({creator:req.payload._id}).populate("members")
+    console.log(findCreator)
+    if(findCreator !==  null){
+     res.status(200).json(findCreator)
+    }else{
+      res.status(200).json(null)
+
+    }
+
+  } catch (error) {
+    next(error)
+    
+  }
+
+})
 
 module.exports = router;
