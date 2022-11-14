@@ -6,6 +6,7 @@ const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares");
 
 const Tourney = require("../models/Tourney.model");
+const Team = require("../models/Team.model");
 
 // POST "/tourney/create" . Create Tourney
 router.post("/create", isAuthenticated, async (req, res, next) => {
@@ -40,7 +41,7 @@ router.get("/list", async (req, res, next) => {
 router.get("/:tourneyId/details", async (req, res, next) => {
     const { tourneyId } = req.params;
     try {
-      const tourneyDetails = await Tourney.findById(tourneyId);
+      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams");
       // send info to client
       res.status(200).json(tourneyDetails);
     } catch (error) {
@@ -72,7 +73,21 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
     // send message to client
     res.status(200).json("Tourney Deleted");
   });
+ 
+   // PATCH "/tourney/:tourneyId/add-team" => add team to torney
+   router.patch("/:tourneyId/add-team", isAuthenticated, async(req,res,next) => {
+    const {tourneyId} = req.params
+    try {
+      const findTeamCreator = await Team.findOne({creator:req.payload._id}).populate("teams")
+        
 
+      await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{teams:findTeamCreator}})
+    } catch (error) {
+      next(error)
+      
+    }
+
+   })
 
 
 
