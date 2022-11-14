@@ -60,7 +60,7 @@ router.delete("/:teamId/delete", isAuthenticated, async (req, res, next) => {
 router.get("/:teamId/details", isAuthenticated, async (req, res, next) => {
   const { teamId } = req.params;
   try {
-    const details = await Team.findById(teamId);
+    const details = await Team.findById(teamId).populate("members");
     // send info to client
     res.status(200).json(details);
   } catch (error) {
@@ -87,6 +87,20 @@ router.get("/find-creator",isAuthenticated, async (req,res,next) => {
     next(error)
     
   }
+
+})
+
+// PATCH "/team/:teamId/add-member" => adds a member to the team.
+router.patch("/:teamId/add-member", isAuthenticated, async (req, res, next)=> {
+  const {teamId} = req.params
+
+  try {
+    await Team.findByIdAndUpdate(teamId, {$addToSet: { members: req.payload._id}})
+    res.status(201).json("Member added correctly");
+  } catch (error) {
+    next(error)
+  }
+
 
 })
 
