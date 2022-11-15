@@ -41,7 +41,7 @@ router.get("/list", async (req, res, next) => {
 router.get("/:tourneyId/details", async (req, res, next) => {
     const { tourneyId } = req.params;
     try {
-      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams");
+      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams").populate("quarterA").populate("quarterB").populate("quarterC").populate("quarterD")
       // send info to client
       res.status(200).json(tourneyDetails);
     } catch (error) {
@@ -95,7 +95,6 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
 
     try {
       const response = await Tourney.findById(tourneyId).populate("teams")
-      // .populate("quaterA").populate("quaterB").populate("quaterC").populate("quaterD")
   
       const eachTourneyTeamsArr = [...response.teams]
       const sorty = eachTourneyTeamsArr.sort(function(a,b){return (Math.random()-0.5)})
@@ -110,9 +109,9 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
       const r6 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterC: sorty[5]}}, {new:true})
       const r7 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: sorty[6]}}, {new:true})
       const r8 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: sorty[7]}}, {new:true})
-      console.log(t)
-      res.status(200).json(sorty)
-
+    
+     
+      
     } catch (error) {
       next(error)
     }
