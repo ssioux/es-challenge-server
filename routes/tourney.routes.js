@@ -90,15 +90,44 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
    })
 
    // GET "/tourney/:tourneyId/sort-teams" => sort the teams in each Tourney for start the tournament
-   router.get("/:tourneyId/sort-teams", isAuthenticated, async(req, res, next)=> {
+   router.patch("/:tourneyId/sort-teams", isAuthenticated, async(req, res, next)=> {
     const {tourneyId} = req.params
 
     try {
       const response = await Tourney.findById(tourneyId).populate("teams")
+      // console.log(response)
       const eachTourneyTeamsArr = [...response.teams]
       const sorty = eachTourneyTeamsArr.sort(function(a,b){return (Math.random()-0.5)})
+      // console.log(sorty)
       res.status(200).json(sorty)
-      
+
+      //   const r1 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: sorty[0]}}, {new:true})
+      //   const r2 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: sorty[1]}}, {new:true})
+      // console.log(r2)
+      //    sorty.forEach(async(eachTeam)=> {
+      //       if(response.quarterA.length <2){
+      //         await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: eachTeam}}, {new:true})
+      //       } else if (response.quarterB.length <2) {
+      //         await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterB: eachTeam}}, {new:true})
+      //       } else if (response.quarterC.length <2) {
+      //         await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterC: eachTeam}}, {new:true})
+      //       } else if (response.quarterD.length <2) {
+      //         await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: eachTeam}}, {new:true})
+      //       }
+      //  })
+
+      const r1 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: sorty[0]}}, {new:true})
+      const r2 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: sorty[1]}}, {new:true})
+      const r3 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterB: sorty[2]}}, {new:true})
+      const r4 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterB: sorty[3]}}, {new:true})
+      const r5 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterC: sorty[4]}}, {new:true})
+      const r6 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterC: sorty[5]}}, {new:true})
+      const r7 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: sorty[6]}}, {new:true})
+      const r8 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: sorty[7]}}, {new:true})
+      console.log(t)
+      res.status(200).json(sorty)
+      //  console.log(response)
+      //  console.log(sorty)
     } catch (error) {
       next(error)
     }
