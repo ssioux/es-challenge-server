@@ -78,7 +78,7 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
    router.patch("/:tourneyId/add-team", isAuthenticated, async(req,res,next) => {
     const {tourneyId} = req.params
     try {
-      const findTeamCreator = await Team.findOne({creator:req.payload._id}).populate("teams")
+      const findTeamCreator = await Team.findOne({creator:req.payload._id})
         
 
       await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{teams:findTeamCreator}})
@@ -89,6 +89,26 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
 
    })
 
+   // GET "/tourney/:tourneyId/sort-teams" => sort the teams in each Tourney for start the tournament
+   router.get("/:tourneyId/sort-teams", isAuthenticated, async(req, res, next)=> {
+    const {tourneyId} = req.params
+
+    try {
+      const response = await Tourney.findById(tourneyId).populate("teams")
+      const eachTourneyTeamsArr = [...response.teams]
+      const sorty = eachTourneyTeamsArr.sort(function(a,b){return (Math.random()-0.5)})
+      res.status(200).json(sorty)
+      
+    } catch (error) {
+      next(error)
+    }
+
+
+
+
+
+
+   })
 
 
 
