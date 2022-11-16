@@ -51,16 +51,42 @@ router.get("/:tourneyId/details", async (req, res, next) => {
 
   // PATCH "/tourney/:tourneyId/edit" => Update Tourney
 router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
-    const { teamId } = req.params;
-    const { name, game } = req.body;
+    const { tourneyId } = req.params;
+    const { name, game,scoreQA1, scoreQA2, scoreQB1,scoreQB2, scoreQC1, scoreQC2, scoreQD1, scoreQD2,scoreSA1,scoreSA2,scoreSB1,scoreSB2,scoreF1,scoreF2} = req.body;
    
     try {
-      await Tourney.findByIdAndUpdate(teamId, {
+      await Tourney.findByIdAndUpdate(tourneyId, {
         name: name,
-        game: game
+        game: game,
+        scoreQA1:scoreQA1,
+        scoreQA2:scoreQA2,
+        scoreQB1:scoreQB1,
+        scoreQB2:scoreQB2,
+        scoreQC1:scoreQC1,
+        scoreQC2:scoreQC2,
+        scoreQD1:scoreQD1,
+        scoreQD2:scoreQD2,
+        scoreSA1:scoreSA1,
+        scoreSA2:scoreSA2,
+        scoreSB1:scoreSB1,
+        scoreSB2:scoreSB2,
+        scoreF1:scoreF1,
+        scoreF2:scoreF2,
       });
+       
+       const response = await Tourney.findById(tourneyId)
+         if(response.scoreQA1 > response.scoreQA2  ) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiA:response.quarterA[0]}})
+         }
+
       // send message to client
       res.status(201).json("Tourney updated correctly");
+
+     
+      
+
+
+
     } catch (error) {
       next(error);
     }
@@ -116,12 +142,12 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
       next(error)
     }
 
+  })
 
 
 
 
 
-   })
 
 
 
