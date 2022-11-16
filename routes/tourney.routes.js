@@ -99,7 +99,7 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
       const eachTourneyTeamsArr = [...response.teams]
       const sorty = eachTourneyTeamsArr.sort(function(a,b){return (Math.random()-0.5)})
      
-      res.status(200).json(sorty)
+      
 
       const r1 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: sorty[0]}}, {new:true})
       const r2 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterA: sorty[1]}}, {new:true})
@@ -110,7 +110,7 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
       const r7 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: sorty[6]}}, {new:true})
       const r8 = await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{quarterD: sorty[7]}}, {new:true})
     
-     
+      res.status(200).json(sorty)
       
     } catch (error) {
       next(error)
