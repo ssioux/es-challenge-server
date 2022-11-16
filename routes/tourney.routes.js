@@ -29,7 +29,7 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
   // GET "/tourney/list" => list of Tourneys
 router.get("/list", async (req, res, next) => {
     try {
-      const tourneyList = await Tourney.find().populate("game").populate("creator");
+      const tourneyList = await Tourney.find().populate("game").populate("creator").populate("teams");
       // send info to client
       res.status(200).json(tourneyList);
     } catch (error) {
