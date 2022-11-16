@@ -75,9 +75,79 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
       });
        
        const response = await Tourney.findById(tourneyId)
-         if(response.scoreQA1 > response.scoreQA2  ) {
-          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiA:response.quarterA[0]}})
+
+       // * Quaters To SemiA
+      if (response.semiA.length < 2) {
+              if(response.scoreQA1 > response.scoreQA2) {
+                await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiA:response.quarterA[0]}})
          }
+
+         if (response.scoreQA1 < response.scoreQA2) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiA:response.quarterA[1]}})
+
+         } 
+         
+          if (response.scoreQB1 > response.scoreQB2  ) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiA:response.quarterB[0]}})
+         } 
+         
+         if (response.scoreQB1 < response.scoreQB2) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiA:response.quarterB[1]}})
+
+         } }
+         // * Quaters To SemiB
+    if (response.semiB.length < 2) {
+         if (response.scoreQC1 > response.scoreQC2  ) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiB:response.quarterC[0]}})
+         } 
+         
+         if (response.scoreQC1 < response.scoreQC2) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiB:response.quarterC[1]}})
+
+         } 
+         
+         if (response.scoreQD1 > response.scoreQD2) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiB:response.quarterD[0]}})
+         } 
+         
+         if (response.scoreQD1 < response.scoreQD2) {
+          await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{semiB:response.quarterD[1]}})
+         }}
+
+         // * SemiA To Final
+      if (response.final.length < 2) {
+          if (response.scoreSA1 > response.scoreSA2  ) {
+           await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{final:response.semiA[0]}})
+          } 
+          
+          if (response.scoreSA1 < response.scoreSA2) {
+           await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{final:response.semiA[1]}})
+ 
+          } 
+          
+          if (response.scoreSB1 > response.scoreSB2  ) {
+            await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{final:response.semiB[0]}})
+           } 
+           
+           if (response.scoreSB1 < response.scoreSB2) {
+            await Tourney.findByIdAndUpdate(tourneyId,{$addToSet:{final:response.semiB[1]}})
+  
+           }}
+
+        // * Winner
+       
+          if (response.scoreF1 > response.scoreF2  ) {
+           await Tourney.findByIdAndUpdate(tourneyId,{winner:response.semiA[0]})
+          } 
+          
+          if (response.scoreF1 < response.scoreF2) {
+           await Tourney.findByIdAndUpdate(tourneyId,{winner:response.semiA[1]})
+ 
+          }
+
+    
+    
+
 
       // send message to client
       res.status(201).json("Tourney updated correctly");
