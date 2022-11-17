@@ -8,6 +8,7 @@ const tourneySchema = new Schema(
       unique: true,
       trim: true,
     },
+    description: String,
     game: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, "gamre is required"],
