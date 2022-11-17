@@ -1,6 +1,7 @@
 const router = require("express").Router();
 
 const isAuthenticated = require("../middlewares/auth.middlewares");
+const uploader = require("../middlewares/cloudinary.middlewares");
 // const uploader = require("../middlewares/cloudinary.middlewares")
 const Game = require("../models/Game.model");
 
@@ -16,7 +17,7 @@ router.get("/list", async (req, res, next) => {
 });
 
 // POST "/game/create" => create new game in BD
-router.post("/create", isAuthenticated, async (req, res, next) => {
+router.post("/create", isAuthenticated, uploader.single("picture"), async (req, res, next) => {
   const { name, description, picture } = req.body;
 
   try {

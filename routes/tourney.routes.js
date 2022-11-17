@@ -41,7 +41,7 @@ router.get("/list", async (req, res, next) => {
 router.get("/:tourneyId/details", async (req, res, next) => {
     const { tourneyId } = req.params;
     try {
-      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams").populate("quarterA").populate("quarterB").populate("quarterC").populate("quarterD").populate("semiA").populate("semiB").populate("final").populate("winner")
+      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams").populate("game").populate("quarterA").populate("quarterB").populate("quarterC").populate("quarterD").populate("semiA").populate("semiB").populate("final").populate("winner")
       // send info to client
       res.status(200).json(tourneyDetails);
     } catch (error) {
@@ -162,7 +162,7 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
     }
   });
   // DELETE "/tourney/:tourneyId/delete" => Delete Tourney
-  router.delete("/:tourneyId/delete", isAuthenticated, async (req, res, next) => {
+    router.delete("/:tourneyId/delete", isAuthenticated, async (req, res, next) => {
     const { tourneyId } = req.params;
     await Tourney.findByIdAndDelete(tourneyId);
   
@@ -178,6 +178,7 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
         
 
       await Tourney.findByIdAndUpdate(tourneyId, {$addToSet:{teams:findTeamCreator}})
+      res.status(200).json("Team added")
     } catch (error) {
       next(error)
       

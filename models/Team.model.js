@@ -15,9 +15,11 @@ const teamSchema = new Schema(
       unique: true,
       trim: true
     },
-    picture: String, 
+    picture: {
+      type: String, 
+      default: "https://www.precisionpass.co.uk/wp-content/uploads/2018/03/default-team-logo.png"
      
-    
+    },
     creator:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

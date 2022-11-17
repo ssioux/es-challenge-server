@@ -10,7 +10,7 @@ router.post("/", uploader.single("picture"), (req,res,next)=> {
         return
     }
     console.log(req.file.path)//CLOUDINARY URL
-    res.status(400).json({ picture:req.file.path })
+    res.status(200).json({ picture:req.file.path })
 })
 
 

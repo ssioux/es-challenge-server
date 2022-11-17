@@ -1,4 +1,6 @@
 const router = require("express").Router();
+const isAuthenticated = require("../middlewares/auth.middlewares");
+const uploader = require("../middlewares/cloudinary.middlewares");
 const User = require("../models/User.model")
 
 // GET "/profile/user-list"  Users list
@@ -29,10 +31,11 @@ router.get("/:userId/details", async (req, res, next) => {
 })
 
 // PATCH "/profile/:userId/edit" edit User
-router.patch("/:userId/edit", async (req, res, next) => {
+router.patch("/:userId/edit",isAuthenticated, uploader.single("picture"), async (req, res, next) => {
     const {userId} = req.params
-    const { username, email, password } = req.body;
-    const userEdit = {username, email, password }
+    const { username, email, password, picture } = req.body;
+    const userEdit = {username, email, password, picture }
+    
     try {
         await User.findByIdAndUpdate(userId, userEdit)
         // send info to client

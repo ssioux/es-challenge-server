@@ -106,4 +106,25 @@ router.patch("/:teamId/add-member", isAuthenticated, async (req, res, next)=> {
 
 })
 
+// GET "/team/find-team-user"
+router.get("/find-team-user",isAuthenticated, async (req,res,next) => {
+
+  try {
+    const findUserIncluded = await Team.find({members: req.payload._id}).populate("members")
+    console.log(findUserIncluded)
+    if(findUserIncluded !==  null){
+     res.status(200).json(findUserIncluded)
+    }else{
+      res.status(200).json(null)
+
+    }
+
+  } catch (error) {
+    next(error)
+    
+  }
+
+})
+
+
 module.exports = router;
