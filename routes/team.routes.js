@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const isAuthenticated = require("../middlewares/auth.middlewares");
+const uploader = require("../middlewares/cloudinary.middlewares");
 const Team = require("../models/Team.model");
 const User = require("../models/User.model");
 
@@ -16,7 +17,8 @@ router.get("/list", async (req, res, next) => {
 
 // POST "/team/create" . Create Team
 router.post("/create", isAuthenticated, async (req, res, next) => {
-  const { name, nameTag, picture, joinPassword} = req.body;
+  const { name, nameTag, joinPassword,picture} = req.body;
+  
   const teamToCreate = { 
     name : name,
     nameTag: nameTag,

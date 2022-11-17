@@ -15,11 +15,9 @@ const teamSchema = new Schema(
       unique: true,
       trim: true
     },
-    picture: {
-      type: String,
-      // required: [true, 'Password is required.'],
-      // default: "https://espndeportes.espn.com/i/teamlogos/soccer/500/default-team-logo-500.png?h=100&w=100"
-    },
+    picture: String, 
+     
+    
     creator:{
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -8,7 +8,7 @@ const isAuthenticated = require("../middlewares/auth.middlewares");
 
 // POST "/api/auth/signup" => user register
 router.post("/signup", async (req, res, next) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, picture } = req.body;
 
   // Validation 1: All the fields must not be empty
   if (username === "" || email === "" || password === "") {
@@ -62,6 +62,7 @@ try {
         username: username,
         email: email,
         password: hashPassword,
+        picture:picture,
     }
    // Create User
    await User.create(newUser)

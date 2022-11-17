@@ -15,8 +15,8 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    allowedFormats: ["jpg", "png"],
-    folder: "patata"
+    allowedFormats: ["jpg", "png","jpeg","svg"],
+    folder: "es-challenge-app"
   }
 })
 
