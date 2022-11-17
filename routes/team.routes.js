@@ -7,7 +7,7 @@ const User = require("../models/User.model");
 // GET "/team/list" => list of teams
 router.get("/list", async (req, res, next) => {
   try {
-    const teamList = await Team.find().populate("creator").populate("members");
+    const teamList = await Team.find().populate("members");
     // send info to client
     res.status(200).json(teamList);
   } catch (error) {
@@ -16,7 +16,7 @@ router.get("/list", async (req, res, next) => {
 });
 
 // POST "/team/create" . Create Team
-router.post("/create", isAdmin, isAuthenticated, async (req, res, next) => {
+router.post("/create", isAuthenticated, async (req, res, next) => {
   const { name, nameTag, joinPassword, picture } = req.body;
 
   const teamToCreate = {
