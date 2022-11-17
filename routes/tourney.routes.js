@@ -137,11 +137,11 @@ router.patch("/:tourneyId/edit", isAuthenticated, async (req, res, next) => {
         // * Winner
        
           if (response.scoreF1 > response.scoreF2  ) {
-           await Tourney.findByIdAndUpdate(tourneyId,{winner:response.semiA[0]})
+           await Tourney.findByIdAndUpdate(tourneyId,{winner:response.final[0]})
           } 
           
           if (response.scoreF1 < response.scoreF2) {
-           await Tourney.findByIdAndUpdate(tourneyId,{winner:response.semiA[1]})
+           await Tourney.findByIdAndUpdate(tourneyId,{winner:response.final[1]})
  
           }
 
