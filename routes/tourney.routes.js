@@ -41,7 +41,7 @@ router.get("/list", async (req, res, next) => {
 router.get("/:tourneyId/details", async (req, res, next) => {
     const { tourneyId } = req.params;
     try {
-      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams").populate("quarterA").populate("quarterB").populate("quarterC").populate("quarterD")
+      const tourneyDetails = await Tourney.findById(tourneyId).populate("teams").populate("quarterA").populate("quarterB").populate("quarterC").populate("quarterD").populate("semiA").populate("semiB").populate("final").populate("winner")
       // send info to client
       res.status(200).json(tourneyDetails);
     } catch (error) {
