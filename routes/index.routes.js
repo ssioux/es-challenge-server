@@ -5,25 +5,23 @@ router.get("/", (req, res, next) => {
 });
 
 // * authRoutes
- 
-const authRoutes = require("./auth.routes")
-router.use("/auth", authRoutes)
 
-const gameRoutes = require("./game.routes")
-router.use("/game", gameRoutes)
+const authRoutes = require("./auth.routes");
+router.use("/auth", authRoutes);
 
-const teamRoutes = require("./team.routes")
-router.use("/team", teamRoutes)
+const gameRoutes = require("./game.routes");
+router.use("/game", gameRoutes);
 
-const tourneyRoutes = require("./tourney.routes")
-router.use("/tourney", tourneyRoutes)
+const teamRoutes = require("./team.routes");
+router.use("/team", teamRoutes);
 
-const profileRoutes = require("./profile.routes")
-router.use("/profile", profileRoutes)
+const tourneyRoutes = require("./tourney.routes");
+router.use("/tourney", tourneyRoutes);
 
-const uploadRoutes = require("./upload.routes")
-router.use("/upload", uploadRoutes)
+const profileRoutes = require("./profile.routes");
+router.use("/profile", profileRoutes);
 
+const uploadRoutes = require("./upload.routes");
+router.use("/upload", uploadRoutes);
 
 module.exports = router;
-
