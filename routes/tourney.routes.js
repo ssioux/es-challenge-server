@@ -5,14 +5,15 @@ const Tourney = require("../models/Tourney.model");
 const Team = require("../models/Team.model");
 
 // POST "/tourney/create" . Create Tourney
-router.post("/create", isAuthenticated, isAdmin, async (req, res, next) => {
-  const { name, game } = req.body;
+router.post("/create", isAuthenticated, async (req, res, next) => {
+  const { name, game, description } = req.body;
   console.log(req.body);
 
   try {
     await Tourney.create({
       name: name,
       game: game,
+      description: description,
       creator: req.payload._id,
     });
     // send message to client
@@ -36,7 +37,7 @@ router.get("/list", async (req, res, next) => {
 });
 
 // GET "/team/tourneyId/details" => each Tourney details
-router.get("/:tourneyId/details", async (req, res, next) => {
+router.get("/:tourneyId/details", isAuthenticated, async (req, res, next) => {
   const { tourneyId } = req.params;
   try {
     const tourneyDetails = await Tourney.findById(tourneyId)
