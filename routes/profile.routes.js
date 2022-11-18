@@ -31,7 +31,6 @@ router.get("/:userId/details", async (req, res, next) => {
 router.patch(
   "/:userId/edit",
   isAuthenticated,
-  isAdmin,
   uploader.single("picture"),
   async (req, res, next) => {
     const { userId } = req.params;
