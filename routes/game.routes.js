@@ -20,7 +20,6 @@ router.get("/list", async (req, res, next) => {
 router.post(
   "/create",
   isAuthenticated,
-  isAdmin,
   uploader.single("picture"),
   async (req, res, next) => {
     const { name, description, picture } = req.body;
