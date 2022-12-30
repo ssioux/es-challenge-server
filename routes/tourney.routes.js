@@ -37,7 +37,7 @@ router.get("/list", async (req, res, next) => {
 });
 
 // GET "/team/tourneyId/details" => each Tourney details
-router.get("/:tourneyId/details", isAuthenticated, async (req, res, next) => {
+router.get("/:tourneyId/details", async (req, res, next) => {
   const { tourneyId } = req.params;
   try {
     const tourneyDetails = await Tourney.findById(tourneyId)

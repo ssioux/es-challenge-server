@@ -68,7 +68,7 @@ router.delete(
 );
 
 // GET "/team/teamId/details" . team details
-router.get("/:teamId/details", isAuthenticated, async (req, res, next) => {
+router.get("/:teamId/details", async (req, res, next) => {
   const { teamId } = req.params;
   try {
     const details = await Team.findById(teamId).populate("members");
