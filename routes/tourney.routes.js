@@ -62,7 +62,7 @@ router.get("/:tourneyId/details", async (req, res, next) => {
 router.patch(
   "/:tourneyId/edit",
   isAuthenticated,
-  isAdmin,
+
   async (req, res, next) => {
     const { tourneyId } = req.params;
     const {
@@ -84,7 +84,14 @@ router.patch(
       scoreF2,
     } = req.body;
 
-    try {
+    try { 
+        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiA: -1}})
+        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiA: -1}})
+        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiB: -1}})
+        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiB: -1}})
+        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
+        // await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
+
       await Tourney.findByIdAndUpdate(tourneyId, {
         name: name,
         game: game,
@@ -250,7 +257,7 @@ router.patch(
 router.patch(
   "/:tourneyId/sort-teams",
   isAuthenticated,
-  isAdmin,
+  
   async (req, res, next) => {
     const { tourneyId } = req.params;
 
