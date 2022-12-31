@@ -227,7 +227,13 @@ router.patch(
   isAuthenticated,
   async (req, res, next) => {
     const { tourneyId } = req.params;
+
     try {
+      const response = await Tourney.findById(tourneyId)
+       if (response.teams.length === 8) {
+      res.status(401).json({errorMessage: "Tourney accepts only 8 teams"});    
+      return;
+    }
       const findTeamCreator = await Team.findOne({ creator: req.payload._id });
 
       await Tourney.findByIdAndUpdate(tourneyId, {
