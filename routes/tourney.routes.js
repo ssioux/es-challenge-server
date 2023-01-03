@@ -39,6 +39,9 @@ router.get("/list", async (req, res, next) => {
 // GET "/team/tourneyId/details" => each Tourney details
 router.get("/:tourneyId/details", async (req, res, next) => {
   const { tourneyId } = req.params;
+  setTimeout(async() => {
+    
+  
   try {
     const tourneyDetails = await Tourney.findById(tourneyId)
       .populate("teams")
@@ -56,6 +59,7 @@ router.get("/:tourneyId/details", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+}, 150);
 });
 
 // PATCH "/tourney/:tourneyId/edit" => Update Tourney
@@ -90,7 +94,10 @@ router.patch(
         await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiB: -1}})
         await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiB: -1}})
         await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
-        // await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
+        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
+        await Tourney.findByIdAndUpdate(tourneyId, {$unset: {winner: ""}})
+
+  
 
       await Tourney.findByIdAndUpdate(tourneyId, {
         name: name,
@@ -110,7 +117,9 @@ router.patch(
         scoreF1: scoreF1,
         scoreF2: scoreF2,
       });
-
+      
+        
+    
       const response = await Tourney.findById(tourneyId);
 
       // * Quaters To SemiA
@@ -165,6 +174,11 @@ router.patch(
           });
         }
       }
+      setTimeout( async() => {
+        try {
+          
+       
+      const response = await Tourney.findById(tourneyId);
 
       // * SemiA To Final
       if (response.final.length < 2) {
@@ -192,6 +206,16 @@ router.patch(
           });
         }
       }
+    } catch (error) {
+         next(error) 
+    }
+    }, 10);
+
+    setTimeout( async() => {
+      try {
+        
+     
+      const response = await Tourney.findById(tourneyId);
 
       // * Winner
 
@@ -206,7 +230,10 @@ router.patch(
           winner: response.final[1],
         });
       }
-
+    } catch (error) {
+        next(error)
+    }
+    }, 100);
       // send message to client
       res.status(201).json("Tourney updated correctly");
     } catch (error) {
