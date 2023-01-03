@@ -79,17 +79,17 @@ router.get("/:teamId/details", async (req, res, next) => {
   }
 });
 
-// GET "/team/find-creator"
+// GET "/team/find-creator" => Find Team Creator
 router.get("/find-creator", isAuthenticated, async (req, res, next) => {
   console.log(req.payload);
   //  const {creatorId} = req.payload._id
   try {
-    const findCreator = await Team.findOne({
+    const findTeamCreator = await Team.findOne({
       creator: req.payload._id,
     }).populate("members");
-    console.log(findCreator);
-    if (findCreator !== null) {
-      res.status(200).json(findCreator);
+    console.log(findTeamCreator);
+    if (findTeamCreator !== null) {
+      res.status(200).json(findTeamCreator);
     } else {
       res.status(200).json(null);
     }
