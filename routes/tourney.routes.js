@@ -352,8 +352,8 @@ router.patch(
   }
 );
 
-// PATCH "/tourney/:tourneyId/delete-team" => delete user´s Team from current tourney
-router.patch("/:tourneyId/delete-team", isAuthenticated, async (req,res,next) => {
+// PATCH "/tourney/:tourneyId/remove-team" => delete user´s Team from current tourney
+router.patch("/:tourneyId/remove-team", isAuthenticated, async (req,res,next) => {
   const {tourneyId} = req.params;
   try {
     const findTeamCreator = await Team.findOne({ creator: req.payload._id })
