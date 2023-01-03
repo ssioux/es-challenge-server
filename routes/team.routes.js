@@ -27,9 +27,59 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
     joinPassword: joinPassword,
   };
   try {
+    // Validation 1: fields mustn't be empty
+    if (name === "" || nameTag === "" || joinPassword === "") {
+      res
+        .status(400)
+        .json({ errorMessage: "All the fields must be completed",
+          errorMessage2: "*",
+       });
+      return;
+    }
+
+    // Validation 2: Name must have more than 4 letters
+    if (name.length < 4){
+      res
+      .status(400)
+      .json({ errorMessage: "Name must have min 4 letters",
+        errorMessage2: "*",
+     });
+    return;
+    }
+
+     // Validation 3: Name Tag must have max 3 characters
+     if (nameTag.length > 3){
+      res
+      .status(400)
+      .json({ errorMessage: "Name Tag must have max 3 characters",
+        errorMessage2: "*",
+     });
+    return;
+    }
+
+  // Validation 4: Join Password must have min 4 characters
+    if (joinPassword.length < 4){
+      res
+      .status(400)
+      .json({ errorMessage: "Join Password must have min 4 characters",
+        errorMessage2: "*",
+     });
+    return;
+    }
     await Team.create(teamToCreate);
     // send message to client
     res.status(201).json("Team created correctly");
+
+    const findTeamCreator = await Team.findOne({
+      creator: req.payload._id,
+    });
+    console.log(
+      "🚀 ~ file: team.routes.js:36 ~ router.patch ~ findTeamCreator",
+      findTeamCreator
+    );
+    await Team.findByIdAndUpdate(findTeamCreator._id, {
+      $addToSet: { members: req.payload._id },
+    });
   } catch (error) {
     next(error);
   }
