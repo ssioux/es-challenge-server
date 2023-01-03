@@ -174,13 +174,13 @@ router.patch(
           });
         }
       }
+      // **************** SemiA To Final
+
       setTimeout( async() => {
         try {
-          
-       
+            
       const response = await Tourney.findById(tourneyId);
 
-      // * SemiA To Final
       if (response.final.length < 2) {
         if (response.scoreSA1 > response.scoreSA2) {
           await Tourney.findByIdAndUpdate(tourneyId, {
@@ -211,13 +211,14 @@ router.patch(
     }
     }, 10);
 
+    // ****************    Winner
+
     setTimeout( async() => {
       try {
         
      
       const response = await Tourney.findById(tourneyId);
 
-      // * Winner
 
       if (response.scoreF1 > response.scoreF2) {
         await Tourney.findByIdAndUpdate(tourneyId, {
@@ -264,12 +265,19 @@ router.patch(
 
     try {
       const response = await Tourney.findById(tourneyId)
-       if (response.teams.length === 8) {
-      res.status(401).json({errorMessage: "Tourney accepts only 8 teams"});    
-      return;
-    }
       const findTeamCreator = await Team.findOne({ creator: req.payload._id });
-
+     
+     
+      // Max teams in the tourney 8
+      if (response.teams.length === 8) {
+        res.status(401).json({errorMessage: "Tourney is full"});    
+        return;
+      } 
+      // User must have a team to register
+      if ( findTeamCreator === null){
+        res.status(401).json({errorMessage: "You must create a team to register in the tourney"})
+        return;
+      }
       await Tourney.findByIdAndUpdate(tourneyId, {
         $addToSet: { teams: findTeamCreator },
       });
@@ -343,5 +351,19 @@ router.patch(
     }
   }
 );
+
+// PATCH "/tourney/:tourneyId/delete-team" => delete user´s Team from current tourney
+router.patch("/:tourneyId/delete-team", isAuthenticated, async (req,res,next) => {
+  const {tourneyId} = req.params;
+  try {
+    const findTeamCreator = await Team.findOne({ creator: req.payload._id })
+     await Tourney.findByIdAndUpdate(tourneyId,{
+      $pull: { teams: findTeamCreator._id },
+    });
+    res.status(200).json("Team deleted correctly");
+  } catch (error) {
+    next(error)
+  }
+})
 
 module.exports = router;
