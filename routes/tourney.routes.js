@@ -39,27 +39,25 @@ router.get("/list", async (req, res, next) => {
 // GET "/team/tourneyId/details" => each Tourney details
 router.get("/:tourneyId/details", async (req, res, next) => {
   const { tourneyId } = req.params;
-  setTimeout(async() => {
-    
-  
-  try {
-    const tourneyDetails = await Tourney.findById(tourneyId)
-      .populate("teams")
-      .populate("game")
-      .populate("quarterA")
-      .populate("quarterB")
-      .populate("quarterC")
-      .populate("quarterD")
-      .populate("semiA")
-      .populate("semiB")
-      .populate("final")
-      .populate("winner");
-    // send info to client
-    res.status(200).json(tourneyDetails);
-  } catch (error) {
-    next(error);
-  }
-}, 150);
+  setTimeout(async () => {
+    try {
+      const tourneyDetails = await Tourney.findById(tourneyId)
+        .populate("teams")
+        .populate("game")
+        .populate("quarterA")
+        .populate("quarterB")
+        .populate("quarterC")
+        .populate("quarterD")
+        .populate("semiA")
+        .populate("semiB")
+        .populate("final")
+        .populate("winner");
+      // send info to client
+      res.status(200).json(tourneyDetails);
+    } catch (error) {
+      next(error);
+    }
+  }, 150);
 });
 
 // PATCH "/tourney/:tourneyId/edit" => Update Tourney
@@ -88,16 +86,14 @@ router.patch(
       scoreF2,
     } = req.body;
 
-    try { 
-        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiA: -1}})
-        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiA: -1}})
-        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiB: -1}})
-        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {semiB: -1}})
-        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
-        await Tourney.findByIdAndUpdate(tourneyId, {$pop: {final: -1}})
-        await Tourney.findByIdAndUpdate(tourneyId, {$unset: {winner: ""}})
-
-  
+    try {
+      await Tourney.findByIdAndUpdate(tourneyId, { $pop: { semiA: -1 } });
+      await Tourney.findByIdAndUpdate(tourneyId, { $pop: { semiA: -1 } });
+      await Tourney.findByIdAndUpdate(tourneyId, { $pop: { semiB: -1 } });
+      await Tourney.findByIdAndUpdate(tourneyId, { $pop: { semiB: -1 } });
+      await Tourney.findByIdAndUpdate(tourneyId, { $pop: { final: -1 } });
+      await Tourney.findByIdAndUpdate(tourneyId, { $pop: { final: -1 } });
+      await Tourney.findByIdAndUpdate(tourneyId, { $unset: { winner: "" } });
 
       await Tourney.findByIdAndUpdate(tourneyId, {
         name: name,
@@ -117,9 +113,7 @@ router.patch(
         scoreF1: scoreF1,
         scoreF2: scoreF2,
       });
-      
-        
-    
+
       const response = await Tourney.findById(tourneyId);
 
       // * Quaters To SemiA
@@ -176,65 +170,61 @@ router.patch(
       }
       // **************** SemiA To Final
 
-      setTimeout( async() => {
+      setTimeout(async () => {
         try {
-            
-      const response = await Tourney.findById(tourneyId);
+          const response = await Tourney.findById(tourneyId);
 
-      if (response.final.length < 2) {
-        if (response.scoreSA1 > response.scoreSA2) {
-          await Tourney.findByIdAndUpdate(tourneyId, {
-            $addToSet: { final: response.semiA[0] },
-          });
+          if (response.final.length < 2) {
+            if (response.scoreSA1 > response.scoreSA2) {
+              await Tourney.findByIdAndUpdate(tourneyId, {
+                $addToSet: { final: response.semiA[0] },
+              });
+            }
+
+            if (response.scoreSA1 < response.scoreSA2) {
+              await Tourney.findByIdAndUpdate(tourneyId, {
+                $addToSet: { final: response.semiA[1] },
+              });
+            }
+
+            if (response.scoreSB1 > response.scoreSB2) {
+              await Tourney.findByIdAndUpdate(tourneyId, {
+                $addToSet: { final: response.semiB[0] },
+              });
+            }
+
+            if (response.scoreSB1 < response.scoreSB2) {
+              await Tourney.findByIdAndUpdate(tourneyId, {
+                $addToSet: { final: response.semiB[1] },
+              });
+            }
+          }
+        } catch (error) {
+          next(error);
         }
+      }, 10);
 
-        if (response.scoreSA1 < response.scoreSA2) {
-          await Tourney.findByIdAndUpdate(tourneyId, {
-            $addToSet: { final: response.semiA[1] },
-          });
+      // ****************    Winner
+
+      setTimeout(async () => {
+        try {
+          const response = await Tourney.findById(tourneyId);
+
+          if (response.scoreF1 > response.scoreF2) {
+            await Tourney.findByIdAndUpdate(tourneyId, {
+              winner: response.final[0],
+            });
+          }
+
+          if (response.scoreF1 < response.scoreF2) {
+            await Tourney.findByIdAndUpdate(tourneyId, {
+              winner: response.final[1],
+            });
+          }
+        } catch (error) {
+          next(error);
         }
-
-        if (response.scoreSB1 > response.scoreSB2) {
-          await Tourney.findByIdAndUpdate(tourneyId, {
-            $addToSet: { final: response.semiB[0] },
-          });
-        }
-
-        if (response.scoreSB1 < response.scoreSB2) {
-          await Tourney.findByIdAndUpdate(tourneyId, {
-            $addToSet: { final: response.semiB[1] },
-          });
-        }
-      }
-    } catch (error) {
-         next(error) 
-    }
-    }, 10);
-
-    // ****************    Winner
-
-    setTimeout( async() => {
-      try {
-        
-     
-      const response = await Tourney.findById(tourneyId);
-
-
-      if (response.scoreF1 > response.scoreF2) {
-        await Tourney.findByIdAndUpdate(tourneyId, {
-          winner: response.final[0],
-        });
-      }
-
-      if (response.scoreF1 < response.scoreF2) {
-        await Tourney.findByIdAndUpdate(tourneyId, {
-          winner: response.final[1],
-        });
-      }
-    } catch (error) {
-        next(error)
-    }
-    }, 100);
+      }, 100);
       // send message to client
       res.status(201).json("Tourney updated correctly");
     } catch (error) {
@@ -264,18 +254,21 @@ router.patch(
     const { tourneyId } = req.params;
 
     try {
-      const response = await Tourney.findById(tourneyId)
+      const response = await Tourney.findById(tourneyId);
       const findTeamCreator = await Team.findOne({ creator: req.payload._id });
-     
-     
+
       // Max teams in the tourney 8
       if (response.teams.length === 8) {
-        res.status(401).json({errorMessage: "Tourney is full"});    
+        res.status(401).json({ errorMessage: "Tourney is full" });
         return;
-      } 
+      }
       // User must have a team to register
-      if ( findTeamCreator === null){
-        res.status(401).json({errorMessage: "You must create a team to register in the tourney"})
+      if (findTeamCreator === null) {
+        res
+          .status(401)
+          .json({
+            errorMessage: "You must create a team to register in the tourney",
+          });
         return;
       }
       await Tourney.findByIdAndUpdate(tourneyId, {
@@ -292,7 +285,7 @@ router.patch(
 router.patch(
   "/:tourneyId/sort-teams",
   isAuthenticated,
-  
+
   async (req, res, next) => {
     const { tourneyId } = req.params;
 
@@ -345,6 +338,8 @@ router.patch(
         { new: true }
       );
 
+      const activeTourney = await Tourney.findByIdAndUpdate(tourneyId, {active: true}, { new: true })
+
       res.status(200).json(sorty);
     } catch (error) {
       next(error);
@@ -353,17 +348,21 @@ router.patch(
 );
 
 // PATCH "/tourney/:tourneyId/remove-team" => delete user´s Team from current tourney
-router.patch("/:tourneyId/remove-team", isAuthenticated, async (req,res,next) => {
-  const {tourneyId} = req.params;
-  try {
-    const findTeamCreator = await Team.findOne({ creator: req.payload._id })
-     await Tourney.findByIdAndUpdate(tourneyId,{
-      $pull: { teams: findTeamCreator._id },
-    });
-    res.status(200).json("Team deleted correctly");
-  } catch (error) {
-    next(error)
+router.patch(
+  "/:tourneyId/remove-team",
+  isAuthenticated,
+  async (req, res, next) => {
+    const { tourneyId } = req.params;
+    try {
+      const findTeamCreator = await Team.findOne({ creator: req.payload._id });
+      await Tourney.findByIdAndUpdate(tourneyId, {
+        $pull: { teams: findTeamCreator._id },
+      });
+      res.status(200).json("Team deleted correctly");
+    } catch (error) {
+      next(error);
+    }
   }
-})
+);
 
 module.exports = router;
