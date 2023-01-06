@@ -170,6 +170,16 @@ router.patch("/:teamId/add-member", isAuthenticated, async (req, res, next) => {
   }
 });
 
+//PATCH "/team/:teamId/remove-member" => remove current user from the current team
+router.patch("/:teamId/remove-member", isAuthenticated, async(req, res, next) => {
+const {teamId} = req.params
+try {
+  await Team.findByIdAndUpdate(teamId, {$pull: {members: req.payload._id}})
+  res.status(200).json({okMessage: "Member removed from team correctly"})
+} catch (error) {
+  next(error)
+}
+})
 // GET "/team/find-team-user"
 router.get("/find-team-user", isAuthenticated, async (req, res, next) => {
   try {
