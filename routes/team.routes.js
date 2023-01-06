@@ -151,12 +151,20 @@ router.get("/find-creator", isAuthenticated, async (req, res, next) => {
 // PATCH "/team/:teamId/add-member" => adds a member to the team.
 router.patch("/:teamId/add-member", isAuthenticated, async (req, res, next) => {
   const { teamId } = req.params;
-
+  const {password} = req.body
+  console.log("req.body",req.body)
   try {
-    await Team.findByIdAndUpdate(teamId, {
-      $addToSet: { members: req.payload._id },
-    });
-    res.status(201).json("Member added correctly");
+    const currentTeam = await Team.findById(teamId)
+    if (currentTeam.joinPassword === password){
+      await Team.findByIdAndUpdate(teamId, {
+        $addToSet: { members: req.payload._id },
+      });
+      res.status(201).json("Member added correctly");
+    }else{
+      res.status(400).json({errorMessage:"Incorrect Password"})
+      return
+    }
+    
   } catch (error) {
     next(error);
   }
