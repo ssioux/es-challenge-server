@@ -13,6 +13,7 @@ router.post("/signup", async (req, res, next) => {
   // Validation 1: All the fields must not be empty
   if (username === "" || email === "" || password === "") {
     res.status(400).json({ errorMessage: "All the fields must be completed" });
+    return;
   }
 
   // Validation 2: username should at least contain 4 characters
@@ -20,6 +21,7 @@ router.post("/signup", async (req, res, next) => {
     res
       .status(400)
       .json({ errorMessage: "Username must contain at least 4 characters" });
+      return;
   }
   // Validation 3: Email format validation
   const emailFormat =
