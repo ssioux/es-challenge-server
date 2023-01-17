@@ -117,6 +117,26 @@ router.delete(
   }
 );
 
+// POST "/team/own-team/delete" . Delete Own Team
+router.post(
+  "/own-team/delete",
+  isAuthenticated,
+  async (req, res, next) => {
+    
+    try {
+      const creatorTeam = await Team.findOne({creator: req.payload._id})
+      await Team.findByIdAndDelete(creatorTeam._id)
+      
+      
+    // send message to client
+    res.status(200).json("Team deleted");
+    } catch (error) {
+      next(error)
+    }
+   
+  }
+);
+
 // GET "/team/teamId/details" . team details
 router.get("/:teamId/details", async (req, res, next) => {
   const { teamId } = req.params;
@@ -131,8 +151,8 @@ router.get("/:teamId/details", async (req, res, next) => {
 
 // GET "/team/find-creator" => Find Team Creator
 router.get("/find-creator", isAuthenticated, async (req, res, next) => {
-  console.log(req.payload);
-  //  const {creatorId} = req.payload._id
+ 
+ 
   try {
     const findTeamCreator = await Team.findOne({
       creator: req.payload._id,
