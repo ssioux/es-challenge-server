@@ -21,7 +21,7 @@ router.post("/signup", async (req, res, next) => {
     res
       .status(400)
       .json({ errorMessage: "Username must contain at least 4 characters" });
-      return;
+    return;
   }
   // Validation 3: Email format validation
   const emailFormat =
@@ -45,22 +45,18 @@ router.post("/signup", async (req, res, next) => {
     // Validation 5: Email doesn't already exists in the DB
     const foundEmail = await User.findOne({ email: email });
     if (foundEmail !== null) {
-      res
-        .status(406)
-        .json({
-          errorMessage: "Email has been already registered in the website.",
-        });
+      res.status(406).json({
+        errorMessage: "Email has been already registered in the website.",
+      });
       return;
     }
 
     // Validation 6: User doesn't already exists in the DB
     const foundUser = await User.findOne({ username: username });
     if (foundUser !== null) {
-      res
-        .status(406)
-        .json({
-          errorMessage: "Username has been already registered in the website.",
-        });
+      res.status(406).json({
+        errorMessage: "Username has been already registered in the website.",
+      });
       return;
     }
 

@@ -264,11 +264,9 @@ router.patch(
       }
       // User must have a team to register
       if (findTeamCreator === null) {
-        res
-          .status(401)
-          .json({
-            errorMessage: "You must create a team to register in the tourney",
-          });
+        res.status(401).json({
+          errorMessage: "You must create a team to register in the tourney",
+        });
         return;
       }
       await Tourney.findByIdAndUpdate(tourneyId, {
@@ -297,22 +295,22 @@ router.patch(
         return Math.random() - 0.5;
       });
 
-      const r1 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterA: sorty[0] } },
         { new: true }
       );
-      const r2 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterA: sorty[1] } },
         { new: true }
       );
-      const r3 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterB: sorty[2] } },
         { new: true }
       );
-      const r4 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterB: sorty[3] } },
         { new: true }
@@ -322,23 +320,27 @@ router.patch(
         { $addToSet: { quarterC: sorty[4] } },
         { new: true }
       );
-      const r6 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterC: sorty[5] } },
         { new: true }
       );
-      const r7 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterD: sorty[6] } },
         { new: true }
       );
-      const r8 = await Tourney.findByIdAndUpdate(
+      await Tourney.findByIdAndUpdate(
         tourneyId,
         { $addToSet: { quarterD: sorty[7] } },
         { new: true }
       );
 
-      const activeTourney = await Tourney.findByIdAndUpdate(tourneyId, {active: true}, { new: true })
+      await Tourney.findByIdAndUpdate(
+        tourneyId,
+        { active: true },
+        { new: true }
+      );
 
       res.status(200).json(sorty);
     } catch (error) {
