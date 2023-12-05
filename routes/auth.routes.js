@@ -109,7 +109,6 @@ router.post("/login", async (req, res, next) => {
   try {
     // Validation 4: User is already registered in the DB
     const foundUser = await User.findOne({ email: email });
-    console.log(foundUser);
     if (foundUser === null) {
       res.status(400).json({ errorMessage: "Incorrect credentials" });
       return;

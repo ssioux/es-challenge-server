@@ -8,7 +8,6 @@ router.post("/", uploader.single("picture"), (req, res, next) => {
     res.status(400).json("problemas subiendo la imagen");
     return;
   }
-  console.log(req.file.path); //CLOUDINARY URL
   res.status(200).json({ picture: req.file.path });
 });
 

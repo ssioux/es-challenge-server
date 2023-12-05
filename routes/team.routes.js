@@ -73,10 +73,7 @@ router.post("/create", isAuthenticated, async (req, res, next) => {
     const findTeamCreator = await Team.findOne({
       creator: req.payload._id,
     });
-    console.log(
-      "🚀 ~ file: team.routes.js:36 ~ router.patch ~ findTeamCreator",
-      findTeamCreator
-    );
+
     await Team.findByIdAndUpdate(findTeamCreator._id, {
       $addToSet: { members: req.payload._id },
     });
@@ -157,7 +154,6 @@ router.get("/find-creator", isAuthenticated, async (req, res, next) => {
     const findTeamCreator = await Team.findOne({
       creator: req.payload._id,
     }).populate("members");
-    console.log(findTeamCreator);
     if (findTeamCreator !== null) {
       res.status(200).json(findTeamCreator);
     } else {
@@ -172,7 +168,7 @@ router.get("/find-creator", isAuthenticated, async (req, res, next) => {
 router.patch("/:teamId/add-member", isAuthenticated, async (req, res, next) => {
   const { teamId } = req.params;
   const {password} = req.body
-  console.log("req.body",req.body)
+
   try {
     const currentTeam = await Team.findById(teamId)
     if (currentTeam.joinPassword === password){
@@ -206,7 +202,7 @@ router.get("/find-team-user", isAuthenticated, async (req, res, next) => {
     const findUserIncluded = await Team.find({
       members: req.payload._id,
     }).populate("members");
-    console.log(findUserIncluded);
+
     if (findUserIncluded !== null) {
       res.status(200).json(findUserIncluded);
     } else {

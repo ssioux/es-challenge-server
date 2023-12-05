@@ -7,7 +7,6 @@ const Team = require("../models/Team.model");
 // POST "/tourney/create" . Create Tourney
 router.post("/create", isAuthenticated, async (req, res, next) => {
   const { name, game, description } = req.body;
-  console.log(req.body);
 
   try {
     await Tourney.create({

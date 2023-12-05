@@ -5,7 +5,6 @@ const isAuthenticated = jwt({
   algorithms: ["HS256"],
   requestProperty: "payload",
   getToken: (req) => {
-    console.log(req.headers);
     // Error if user doesn´t send the Token
     if (req.headers === undefined || req.headers.authorization === undefined) {
       console.log("No hay Token");

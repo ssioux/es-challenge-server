@@ -10,7 +10,6 @@ router.get("/list", async (req, res, next) => {
   try {
     const responseList = await Game.find();
     res.status(200).json(responseList);
-    console.log("lista de juegos", responseList);
   } catch (error) {
     next(error);
   }
@@ -33,7 +32,6 @@ router.post(
       });
 
       res.status(200).json("Game Created");
-      console.log(response);
     } catch (error) {
       next(error);
     }
